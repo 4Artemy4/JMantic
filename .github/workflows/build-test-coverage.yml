@@ -25,26 +25,12 @@ jobs:
       - name: "Build JMantic"
         run: ./gradlew assemble
 
-  test:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
       - name: "Install Docker"
         uses: docker-practice/actions-setup-docker@master
 
       - name: "Pull Ostis docker-image"
         run: sudo docker pull ostis/ostis:0.6.0
 
-      - name: "Run Tests"
-        run: |
-          sudo docker run -p 8000:8000 -p 8090:8090 ostis/ostis:0.6.0 sh ostis --sctp --web &
-          sleep 10
-          ./gradlew test
-
-  coverage:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
       - name: "Run Tests and Coverage"
         run: |
           sudo docker run -p 8000:8000 -p 8090:8090 ostis/ostis:0.6.0 sh ostis --sctp --web &
